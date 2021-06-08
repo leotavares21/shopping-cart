@@ -1,0 +1,31 @@
+.footerContainer {
+  position: fixed;
+  background-image: url('/footer.png');
+  background-size: cover;
+
+  padding: 0.85rem 1.5rem;
+  width: 24rem;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+
+  @media (max-width: 768px) {
+    width: 22rem;
+  }
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    li a {
+      text-decoration: none;
+      color: var(--white);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+
+      .icon {
+        margin-left: 0.3rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+.wrapper {
+  display: flex;
+  overflow: hidden;
+
+  @media (max-width: 761px) {
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1;
+    @media (max-width: 761px) {
+      order: 2;
+    }
+  }
+}

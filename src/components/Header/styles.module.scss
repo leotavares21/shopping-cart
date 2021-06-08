@@ -1,0 +1,225 @@
+.headerContainer {
+  height: 6rem;
+  width: calc(100% + 24rem);
+  padding: 2rem;
+  position: relative;
+  z-index: 20;
+
+  @media (max-width: 761px) {
+    width: 100vw;
+    background: var(--blue-800);
+    padding: 0 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+
+    button {
+      color: var(--white);
+    }
+  }
+
+  .buyNav {
+    display: flex;
+    z-index: 10;
+
+    position: absolute;
+    left: 10rem;
+    bottom: 2px;
+
+    li {
+      margin-right: 1.5rem;
+      font-size: 0.85rem;
+
+      &.activeNav {
+        color: var(--blue-800);
+      }
+    }
+
+    li:first-child {
+      position: relative;
+
+      &::after {
+        content: '__';
+        position: absolute;
+        right: -1.15rem;
+        top: -0.3rem;
+        color: var(--gray-400);
+      }
+    }
+  }
+
+  display: flex;
+  align-items: center;
+
+  h1 {
+    margin-left: 2rem;
+    z-index: 10;
+  }
+
+  img {
+    width: 6rem;
+    height: 6rem;
+    z-index: 10;
+
+    background: var(--white);
+    padding: 1rem;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 761px) {
+      background: transparent;
+      padding: 0;
+      box-shadow: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  nav {
+    position: fixed;
+    background-image: url('/Menu-Cart.png');
+    background-size: cover;
+
+    width: 18rem;
+    height: 6rem;
+    z-index: 10;
+    right: 0;
+    top: 0;
+
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 761px) {
+      background-image: none;
+      background-size: auto;
+      width: 3.25rem;
+      height: 0;
+      position: relative;
+      justify-content: space-between;
+    }
+
+    ul {
+      flex: 1;
+      display: flex;
+      justify-content: space-evenly;
+      li {
+        position: relative;
+
+        button {
+          color: var(--blue-800);
+          position: relative;
+
+          span {
+            background: var(--rose-600);
+            color: var(--white);
+            position: absolute;
+
+            right: -50%;
+            top: -45%;
+            border-radius: 50%;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+          }
+        }
+
+        > div {
+          padding: 0.5rem;
+          margin-top: 0.5rem;
+          border-radius: 0.5rem;
+
+          z-index: 10;
+          position: absolute;
+
+          background: var(--gray-300);
+          width: 10rem;
+
+          display: none;
+          flex-direction: column;
+
+          left: 50%;
+          transform: translateX(-50%);
+
+          &::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -0.5rem;
+            width: 0;
+            height: 0;
+
+            border-left: 0.5rem solid transparent;
+            border-right: 0.5rem solid transparent;
+            border-bottom: 0.5rem solid var(--gray-300);
+          }
+
+          input {
+            border-radius: 0.3rem;
+            border: 1px solid;
+            padding: 2px 3px;
+
+            &::placeholder {
+              font-size: 0.8rem;
+            }
+          }
+
+          a {
+            min-width: 5rem;
+            margin-bottom: 0.4rem;
+
+            text-decoration: none;
+            color: var(--gray-500);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            strong {
+              color: var(--blue-800);
+              font-weight: 600;
+              opacity: 0.7;
+              display: flex;
+              flex-wrap: wrap;
+              cursor: auto;
+            }
+
+            span {
+              color: red;
+              font-weight: 600;
+              margin-left: 0.5rem;
+            }
+          }
+        }
+
+        div.activeNav {
+          display: flex;
+        }
+      }
+    }
+  }
+
+  button {
+    position: relative;
+
+    > span {
+      background: var(--rose-600);
+      color: var(--white);
+      position: absolute;
+      
+      right: -50%;
+      top: -45%;
+      border-radius: 50%;
+      width: 1rem;
+      height: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+    }
+  }
+}

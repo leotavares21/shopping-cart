@@ -1,0 +1,75 @@
+{
+  "shoe": {
+    "id": "air-jordan-xxxv",
+    "name": "Air Jordan",
+    "model": "XXXV",
+    "category": "Basquete, tênis",
+    "colors": ["black", "white"],
+    "soldOut": [41, 42, 44, 9.5, 10.5, 11.5, 12.5],
+    "price": "899.99",
+    "images": [
+      {
+        "color": "black",
+        "imgs": [
+          "/black/black-air-jordan.png",
+          "/black/black-air-jordan-2.png",
+          "/black/black-air-jordan-3.png",
+          "/black/black-air-jordan-4.png"
+        ]
+      },
+      {
+        "color": "white",
+        "imgs": [
+          "/white/white-air-jordan.png",
+          "/white/white-air-jordan-2.png",
+          "/white/white-air-jordan-3.png",
+          "/white/white-air-jordan-4.png"
+        ]
+      }
+    ],
+    "sizes": [
+      {
+        "country": "BR",
+        "values": [39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+      },
+      {
+        "country": "US",
+        "values": [8, 9, 9.5, 10.5, 11.5, 12, 12.5, 13, 14, 15]
+      }
+    ],
+    "body": {
+      "description": "Quanto mais leve o sapato, menos peso para carregar. Em evolução no lançamento do ano passado, o Air Jordan XXXV apresenta uma placa estabilizadora Eclipse 2.0, amortecimento visível e novos cabos Flightwire. Leve e ágil, é projetado para ajudar os jogadores a obter o máximo de sua potência e capacidade atlética.",
+      "reasons": [
+        {
+          "text": "A placa Eclipse 2.0 suavemente esculpida é elevada para permitir estabilidade."
+        },
+        {
+          "text": "O amortecimento Zoom Air sob o calcanhar e antepé proporciona uma sensação elástica e ágil."
+        },
+        {
+          "text": "Cabos de arame costurados nas laterais irradiam para cima da placa curva."
+        },
+        {
+          "text": "A sola de borracha usa um padrão de piso de espinha de peixe modificado que agarra a quadra."
+        },
+        {
+          "text": "Os detalhes sutis do design combinam com o Air Jordan 5, incluindo a gola saliente."
+        }
+      ],
+      "pop_reviews": [
+        {
+          "user_img": "/user1.jpg",
+          "name": "John Doe",
+          "value": [1, 2, 3, 4, 5],
+          "text": "Aliquam sed urna nec enim rutrum gravida sit amet a augue. Suspendisse ac molestie ante. Praesent sagittis sapien id mauris pharetra venenatis. Etiam ut lorem magna. Proin non justo faucibus, mattis eros vitae, commodo felis. Ut vitae rutrum erat. Nullam ornare, justo vitae pharetra pellentesque, erat lorem faucibus sapien, ac vehicula sem ex nec nulla. Aliquam quam urna, ornare vitae vestibulum imperdiet, iaculis ut justo. Ut scelerisque libero magna, ut aliquet nibh pellentesque ut. Sed sit amet aliquam erat, nec tincidunt lorem. Nullam ligula ex, aliquam ut elit vel, venenatis venenatis leo. Curabitur ut metus tincidunt, commodo lacus id, interdum erat. Pellentesque pharetra lacus vel mauris pretium placerat. Sed finibus lacus et viverra egestas. Morbi dictum urna at egestas tincidunt."
+        },
+        {
+          "user_img": "/user2.jpg",
+          "name": "Paul Jackson",
+          "value": [1, 2, 3, 4],
+          "text": "In hac habitasse platea dictumst. Mauris sed posuere enim, eu accumsan felis. Sed porttitor in augue sit amet elementum. Nulla tempor ante metus, sit amet semper felis hendrerit a. Vivamus rhoncus, justo nec accumsan fermentum, dui lacus fringilla ante, eu tincidunt libero urna sed ipsum. Sed semper neque vel metus venenatis, in auctor turpis accumsan. Duis ultricies pulvinar nulla vitae dapibus. Quisque a placerat odio. In eu quam laoreet, posuere arcu sed, feugiat quam. Duis pretium metus at justo commodo, et viverra augue rutrum. Nulla fringilla quam tincidunt quam aliquam, ut hendrerit tellus blandit. Praesent sed sapien et metus molestie vestibulum. "
+        }
+      ]
+    }
+  }
+}
