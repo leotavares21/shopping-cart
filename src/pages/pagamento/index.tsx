@@ -38,15 +38,7 @@ export default function Payment() {
             lastName: '',
             email: ''
           }}
-          onSubmit={(
-            values: Values,
-            { setSubmitting }: FormikHelpers<Values>
-          ) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2))
-              setSubmitting(false)
-            }, 500)
-          }}
+          onSubmit={() => console.log(null)}
         >
           <Form className={styles.form}>
             <label htmlFor="numberCard">Número do cartão</label>
