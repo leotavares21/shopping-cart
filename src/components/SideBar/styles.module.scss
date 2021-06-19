@@ -154,11 +154,10 @@
         justify-content: center;
 
         border-radius: 0.5rem;
-        width: 3.6rem;
-        height: 4.6rem;
+        width: calc((100% / 5) - 0.4rem);
+        height: 4.5rem;
 
         @media (max-width: 1281px) {
-          width: 2.9rem;
           height: 3.5rem;
         }
 
