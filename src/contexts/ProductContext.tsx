@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
+import { useRouter } from 'next/router'
 
 type Product = {
   id: string
@@ -18,8 +19,7 @@ type ProductContextData = {
   productCountry: string
   productSize: number
   openSidebar: boolean
-  productNumber: number
-  cartItems: { color: string; size: number; image: string; number: number }[]
+  cartItems: { color: string; size: number; image: string; qtd: number }[]
   totalValue: string | number
   titlePage: string
   thumbs: string[]
@@ -30,12 +30,14 @@ type ProductContextData = {
   handleSelectCountry: (country: string) => void
   handleSelectSize: (size: number) => void
   handleOpenSidebar: (open: boolean) => void
-  handleProductNumber: (index: number, number: number) => void
-  handleCartContent: () => void
+  handleProductQtd: (index: number, number: number) => void
+  handleCartAdd: () => void
   handleRemoveItemCart: (index: number) => void
+  hasCartItems: () => void
   handleTotalValue: () => void
   setTotalValue: (value: string | number) => void
   setTitlePage: (title: string) => void
+  setOpenSidebar: (open: boolean) => void
   openNav: (index: number) => void
   setThumbs: (imgs: string[]) => void
   setWidth: (width: number) => void
@@ -50,12 +52,12 @@ type ProductContextProviderProps = {
 export function ProductContextProvider({
   children
 }: ProductContextProviderProps) {
+  const router = useRouter()
   const [product, setProduct] = useState(null)
   const [productColor, setProductColor] = useState('')
   const [productCountry, setProductCountry] = useState('')
   const [productSize, setProductSize] = useState(0)
   const [openSidebar, setOpenSidebar] = useState(false)
-  const [productNumber, setProductNumber] = useState(1)
   const [totalValue, setTotalValue] = useState(null)
   const [cartItems, setCartItems] = useState([])
   const [titlePage, setTitlePage] = useState('')
@@ -76,82 +78,72 @@ export function ProductContextProvider({
   }
 
   function handleOpenSidebar(open: boolean) {
-    setOpenSidebar(open)
+    if (router.pathname === '/') {
+      setOpenSidebar(false)
+    } else {
+      setOpenSidebar(open)
+    }
   }
 
-  function handleProductNumber(index: number, number: number) {
-    if (number > 10 || number < 1) {
+  function handleProductQtd(index: number, qtd: number) {
+    if (qtd > 10 || qtd < 1) {
       return
     } else {
       const newCartItems = [...cartItems]
-      newCartItems[index].number = number
+      newCartItems[index].qtd = qtd
       setCartItems(newCartItems)
-    }
-
-    if (cartItems.length > 1) {
-      cartItems.reduce((allItems, item) => {
-        const allSumNumbers = allItems.number + item.number
-        const price = Number(product.price.replace(',', '.'))
-        const newTotalValue = price * allSumNumbers
-        setTotalValue(newTotalValue.toFixed(2).replace('.', ','))
-      })
-    } else {
-      const price = Number(product.price.replace(',', '.'))
-      const newTotalValue = cartItems[0].number * price
-      setTotalValue(newTotalValue.toFixed(2).replace('.', ','))
     }
   }
 
-  function handleCartContent() {
-    if (cartItems.length > 0) {
-      const items = {
-        color: productColor,
-        size: productSize,
-        image: `/${productColor}/${productColor}-air-jordan.png`,
-        number: 1
-      }
-      setCartItems([...cartItems, items])
+  function handleCartAdd() {
+    if (!productSize) {
+      alert('Nenhum tamanho selecionado!')
     } else {
-      const items = {
-        color: productColor,
-        size: productSize,
-        image: `/${productColor}/${productColor}-air-jordan.png`,
-        number: 1
-      }
+      const checkSize = cartItems.find(
+        item => item.size === productSize && item.color === productColor
+      )
+      if (checkSize) {
+        alert('O tamanho já foi selecionado')
+      } else {
+        const item = {
+          color: productColor,
+          size: productSize,
+          image: `/${productColor}/${productColor}-air-jordan.png`,
+          qtd: 1
+        }
 
-      setCartItems([...cartItems, items])
+        setCartItems([...cartItems, item])
+      }
     }
   }
 
   function handleRemoveItemCart(index: number) {
-    const newItems = cartItems.filter((item, itemIndex) => itemIndex !== index)
-    if (newItems.length > 1) {
-      newItems.reduce((allItems, item) => {
-        const allSumNumbers = allItems.number + item.number
-        const price = Number(product.price.replace(',', '.'))
-        const newTotalValue = price * allSumNumbers
-        setTotalValue(newTotalValue.toFixed(2).replace('.', ','))
-      })
-    } else {
-      const price = Number(product.price.replace(',', '.'))
-      const newTotalValue = cartItems[0].number * price
-      setTotalValue(newTotalValue.toFixed(2).replace('.', ','))
-    }
-    setCartItems(newItems)
+    const newItem = cartItems.filter((item, itemIndex) => itemIndex !== index)
+    setCartItems(newItem)
+    sessionStorage.setItem('cartItems', JSON.stringify(newItem))
   }
 
   function handleTotalValue() {
+    const totalQtd = cartItems.reduce((allItems, item) => allItems + item.qtd, 0)
     const price = Number(product.price.replace(',', '.'))
-    if (cartItems.length > 0) {
-      const newTotalValue = (price * cartItems.length)
-        .toFixed(2)
-        .replace('.', ',')
+    const newTotalValue = (price * totalQtd).toFixed(2).replace('.', ',')
 
-      setTotalValue(newTotalValue)
+    setTotalValue(newTotalValue)
+  }
+
+  function hasCartItems() {
+    if (sessionStorage.cartItems) {
+      const items = sessionStorage.cartItems
+
+      if (cartItems.length === 0) {
+        setCartItems(JSON.parse(items))
+      }else {
+        sessionStorage.setItem('cartItems', JSON.stringify(cartItems))
+      }
     } else {
-      const newTotalValue = (price * productNumber).toFixed(2).replace('.', ',')
-
-      setTotalValue(newTotalValue)
+      if (cartItems.length > 0) {
+        sessionStorage.setItem('cartItems', JSON.stringify(cartItems))
+      }
     }
   }
 
@@ -167,7 +159,6 @@ export function ProductContextProvider({
         productCountry,
         productSize,
         openSidebar,
-        productNumber,
         totalValue,
         titlePage,
         cartItems,
@@ -177,12 +168,14 @@ export function ProductContextProvider({
         setProduct,
         handleSelectColor,
         handleSelectCountry,
-        handleProductNumber,
+        handleProductQtd,
         handleSelectSize,
         handleOpenSidebar,
-        handleCartContent,
+        handleCartAdd,
         handleRemoveItemCart,
+        setOpenSidebar,
         handleTotalValue,
+        hasCartItems,
         setTotalValue,
         setTitlePage,
         openNav,

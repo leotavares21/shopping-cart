@@ -20,7 +20,7 @@ export function SideBar() {
     handleSelectSize,
     handleSelectColor,
     handleSelectCountry,
-    handleCartContent,
+    handleCartAdd,
     handleProductNumber,
     setThumbs,
     width,
@@ -92,7 +92,7 @@ export function SideBar() {
             </section>
           )}
 
-          <Formik initialValues={product} onSubmit={handleCartContent}>
+          <Formik initialValues={product} onSubmit={handleCartAdd}>
             <Form>
               <fieldset className={styles.colorOptions}>
                 <legend>Escolha sua cor favorita</legend>
@@ -206,7 +206,7 @@ export function SideBar() {
             loop={true}
             autoplay={{
               delay: 8000,
-              disableOnInteraction: false
+              disableOnInteraction: true
             }}
             className={styles.paymentList}
           >
@@ -225,7 +225,7 @@ export function SideBar() {
                       <strong>{product.name}</strong>
                       <strong>{product.model}</strong>
                     </div>
-                    <span>{cartItems[index].number}</span>
+                    <span>{cartItems[index].qtd}</span>
                   </div>
                 )}
 

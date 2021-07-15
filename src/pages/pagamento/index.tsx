@@ -1,13 +1,30 @@
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { BiCreditCard } from 'react-icons/bi'
 import { FaCcVisa, FaCcMastercard } from 'react-icons/fa'
 import { Formik, Form, Field } from 'formik'
+import { useProduct } from '../../contexts/ProductContext'
 
 import styles from './styles.module.scss'
 
 export default function Payment() {
   const router = useRouter()
+
+  const {
+    cartItems,
+    setOpenSidebar,
+    hasCartItems
+  } = useProduct()
+
+  useEffect(() => {
+    setOpenSidebar(false)
+    hasCartItems()
+  }, [])
+
+  useEffect(() => {
+    hasCartItems()
+  }, [cartItems.length])
 
   return (
     <div className={styles.paymentContainer}>

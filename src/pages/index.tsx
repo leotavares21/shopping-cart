@@ -1,6 +1,7 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { AiFillStar } from 'react-icons/ai'
@@ -49,13 +50,17 @@ type HomeProps = {
 }
 
 export default function Home({ product, productBody }: HomeProps) {
+  const router = useRouter()
   const {
     productColor,
     width,
     thumbs,
+    cartItems,
     setProduct,
     setThumbs,
     handleSelectColor,
+    setOpenSidebar,
+    hasCartItems,
     handleSelectCountry
   } = useProduct()
 
@@ -63,7 +68,14 @@ export default function Home({ product, productBody }: HomeProps) {
     setProduct(product)
     handleSelectColor(product.colors[0])
     handleSelectCountry(product.sizes[0].country)
+    if(router.pathname === '/'){
+      setOpenSidebar(false)
+    }
   }, [])
+
+  useEffect(() => {
+    hasCartItems()
+  }, [cartItems.length])
 
   useEffect(() => {
     productBody.images

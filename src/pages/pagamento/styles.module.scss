@@ -1,13 +1,13 @@
 .paymentContainer {
   width: 77vw;
-  padding: 2.5rem 10rem 6rem 10rem;
+  padding: 2.5rem 10rem 9rem 10rem;
 
   @media (max-width: 1281px) {
-    padding: 2.5rem 5rem 6rem 5rem;
+    padding: 2.5rem 5rem 9rem 5rem;
   }
 
   @media (max-width: 768px) {
-    padding: 2.5rem 0rem 6rem 2.5rem;
+    padding: 2.5rem 0rem 9rem 2.5rem;
   }
 
   @media (max-width: 761px) {
@@ -178,6 +178,7 @@
       button {
         display: block;
         background: var(--rose-600);
+        box-shadow: 0 1.5rem 1rem rgba(231, 28, 76, 0.3);
 
         padding: 0.8rem 3.5rem;
         border-radius: 1.5rem;

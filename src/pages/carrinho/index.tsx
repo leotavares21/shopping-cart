@@ -11,16 +11,27 @@ export default function Cart() {
   const {
     product,
     openSidebar,
-    handleProductNumber,
+    handleProductQtd,
     handleRemoveItemCart,
     handleTotalValue,
+    hasCartItems,
+    setOpenSidebar,
     cartItems,
     totalValue
   } = useProduct()
 
   useEffect(() => {
-    handleTotalValue()
+    setOpenSidebar(true)
+  }, [])
+
+  useEffect(() => {
+    hasCartItems()
   }, [cartItems.length])
+
+  useEffect(() => {
+    handleTotalValue()
+    console.log(totalValue)
+  }, [cartItems])
 
   return (
     <div
@@ -50,7 +61,6 @@ export default function Cart() {
                     </th>
                   </tr>
                 </thead>
-                {console.log(cartItems[0].number)}
                 <tbody>
                   <tr>
                     <div>
@@ -58,21 +68,21 @@ export default function Cart() {
                         <strong>{product.name}</strong>
                         <strong>{product.model}</strong>
                       </td>
-
+                      {console.log(cartItems)}
                       <td>
                         <button
                           type="button"
                           onClick={() =>
-                            handleProductNumber(index, item.number - 1)
+                            handleProductQtd(index, item.qtd - 1)
                           }
                         >
                           -
                         </button>
-                        <input type="text" value={item.number} />
+                        <input type="text" value={item.qtd} />
                         <button
                           type="button"
                           onClick={() =>
-                            handleProductNumber(index, item.number + 1)
+                            handleProductQtd(index, item.qtd + 1)
                           }
                         >
                           +
@@ -97,7 +107,7 @@ export default function Cart() {
                         type="button"
                         onClick={() => handleRemoveItemCart(index)}
                       >
-                        X
+                        &#10005;
                       </button>
                     </td>
                   </tr>

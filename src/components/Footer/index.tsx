@@ -1,10 +1,12 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 import { BiMenu } from 'react-icons/bi'
 import { useProduct } from '../../contexts/ProductContext'
 
 import styles from './footer.module.scss'
 
 export function Footer() {
+  const router = useRouter()
   const { handleOpenSidebar, openSidebar } = useProduct()
 
   return (
@@ -22,11 +24,13 @@ export function Footer() {
         <li>
           <a href="#">Sobre</a>
         </li>
-        <li onClick={() => handleOpenSidebar(!openSidebar)}>
-          <a>
-            Menu <BiMenu className={styles.icon} />
-          </a>
-        </li>
+        {router.pathname !== '/' && (
+          <li onClick={() => handleOpenSidebar(!openSidebar)}>
+            <a>
+              Menu <BiMenu className={styles.icon} />
+            </a>
+          </li>
+        )}
       </ul>
     </footer>
   )
