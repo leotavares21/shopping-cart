@@ -21,7 +21,6 @@ export function SideBar() {
     handleSelectColor,
     handleSelectCountry,
     handleCartAdd,
-    handleProductNumber,
     setThumbs,
     width,
     thumbs,
