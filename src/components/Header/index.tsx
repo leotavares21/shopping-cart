@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useLayoutEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { FaUserAlt } from 'react-icons/fa'
 import { MdFavorite } from 'react-icons/md'
 import { FiSearch } from 'react-icons/fi'
@@ -11,19 +11,14 @@ import { BiMenu } from 'react-icons/bi'
 
 export function Header() {
   const router = useRouter()
-  const navRef = useRef<HTMLLIElement>(null)
-  const navRef2 = useRef<HTMLLIElement>(null)
-  const navRef3 = useRef<HTMLLIElement>(null)
-  const navRef4 = useRef<HTMLButtonElement>(null)
-  const navRef5 = useRef<HTMLButtonElement>(null)
-  const navRef6 = useRef<HTMLButtonElement>(null)
 
   const {
-    navIndex,
-    openNav,
     titlePage,
     setTitlePage,
     cartItems,
+    setCartItems,
+    handleOpenSidebar,
+    openSidebar,
     width,
     setWidth
   } = useProduct()
@@ -38,43 +33,16 @@ export function Header() {
 
   useEffect(() => {
     useWidth()
+    const cartFromStorage = JSON.parse(sessionStorage.getItem('cartItems')) || []
+    setCartItems(cartFromStorage)
   }, [])
 
   useEffect(() => {
-    if (width > 761) {
-      const handleClick = e => {
-        if (
-          navRef.current.contains(e.target) ||
-          navRef2.current.contains(e.target) ||
-          navRef3.current.contains(e.target)
-        ) {
-          return
-        } else {
-          openNav(null)
-        }
-      }
-      document.addEventListener('mousedown', handleClick)
-      return () => {
-        document.removeEventListener('mousedown', handleClick)
-      }
-    } else {
-      const handleClick = e => {
-        if (
-          navRef4.current.contains(e.target) ||
-          navRef5.current.contains(e.target) ||
-          navRef6.current.contains(e.target)
-        ) {
-          return
-        } else {
-          openNav(null)
-        }
-      }
-      document.addEventListener('mousedown', handleClick)
-      return () => {
-        document.removeEventListener('mousedown', handleClick)
-      }
+    if(cartItems.length > 0){
+      sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
     }
-  }, [width])
+  },[cartItems])
+
 
   function useWidth() {
     function updateWidth() {
@@ -122,36 +90,23 @@ export function Header() {
 
           <nav>
             <ul>
-              <li ref={navRef}>
-                <button type="button" onClick={() => openNav(0)}>
+              <li>
+                <button type="button">
                   <FiSearch />
                 </button>
-                <div className={navIndex === 0 ? styles.activeNav : ''}>
-                  <input type="text" placeholder="Buscar..." />
-                </div>
               </li>
 
-              <li ref={navRef2}>
-                <button type="button" onClick={() => openNav(1)}>
+              <li>
+                <button type="button">
                   <FaUserAlt />
                 </button>
-                <div className={navIndex === 1 ? styles.activeNav : ''}>
-                  <a href="#">conta</a>
-                  <a href="#">avisos</a>
-                  <a href="#">sair</a>
-                </div>
               </li>
 
-              <li ref={navRef3}>
-                <button type="button" onClick={() => openNav(2)}>
+              <li>
+                <button type="button">
                   <span>1</span>
                   <MdFavorite />
                 </button>
-                <div className={navIndex === 2 ? styles.activeNav : ''}>
-                  <a href="#">
-                    <strong>product</strong> <span>x</span>
-                  </a>
-                </div>
               </li>
 
               <li>
@@ -165,8 +120,8 @@ export function Header() {
         </>
       ) : (
         <>
-          <button ref={navRef4}>
-            <BiMenu className={styles.icon} />
+          <button type="button" onClick={() => handleOpenSidebar(!openSidebar)}>
+            <BiMenu className={styles.icon}/>
           </button>
           <img
             src="/logo.png"
@@ -174,10 +129,10 @@ export function Header() {
             onClick={() => router.push('/')}
           />
           <nav>
-            <button ref={navRef5}>
+            <button>
               <MdFavorite />
             </button>
-            <button ref={navRef6} onClick={() => router.push('/carrinho')}>
+            <button onClick={() => router.push('/carrinho')}>
               {cartItems.length > 0 && <span>{cartItems.length}</span>}
               <HiShoppingCart />
             </button>

@@ -68,6 +68,10 @@ ul {
 fieldset {
   border: none;
   margin-bottom: 2.5rem;
+
+  @media (max-width: 420px) {
+    margin-bottom: 1rem;
+  }
 }
 
 legend {
@@ -75,48 +79,54 @@ legend {
 }
 
 .swiper-container-vertical {
-  @media (min-width: 762px) {
+  @media (min-width: 761px) {
     border-top: 6rem solid var(--white);
   }
+  border-bottom: 6rem solid var(--white);
 }
 
 .swiper-container-vertical .swiper-slide {
-  @media (min-width: 769px) {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1025px) {
     align-items: center;
   }
 
+  @media (max-width: 420px) {
+    align-items: flex-end;
+  }
 }
 
 .swiper-container-vertical .swiper-pagination-bullets {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 100;
 
   left: 0rem;
-  top: 85% !important;
+  top: 89% !important;
   width: 20rem;
 
   @media (max-width: 1281px) {
     width: 15rem;
-    top: 88% !important;
   }
 
   @media (max-width: 768px) {
-    top: 92% !important;
+    top: 93% !important;
   }
 
-  @media (max-width: 762px) {
+  @media (max-width: 761px) {
     flex-direction: column;
-    left: -1.5rem;
+    left: -2rem;
     width: 4rem;
     height: 15rem;
-    top: 42% !important;
+    top: 74% !important;
+  }
+
+  @media (max-width: 420px) {
+    top: 70% !important;
   }
 }
 
@@ -140,7 +150,7 @@ legend {
       height: 3.5rem;
     }
 
-    @media (max-width: 762px) {
+    @media (max-width: 761px) {
       width: 3rem;
       height: 3rem;
     }
@@ -155,7 +165,7 @@ legend {
 .swiper-container-horizontal {
   margin-bottom: 2.5rem;
 
-  @media (max-width: 762px) {
+  @media (max-width: 761px) {
     margin-bottom: 0;
   }
 }

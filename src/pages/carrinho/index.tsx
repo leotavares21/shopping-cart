@@ -5,32 +5,49 @@ import { useRouter } from 'next/router'
 import { useProduct } from '../../contexts/ProductContext'
 
 import styles from './styles.module.scss'
+import { GetStaticProps } from 'next'
+import { api } from '../../services/api'
 
-export default function Cart() {
+type Product = {
+  id: string
+  name: string
+  model: string
+  colors: string[]
+  category: string
+  price: string
+  soldOut: number[]
+  sizes: { country: string; values: number[] }[]
+  images: { color: string; imgs: string[] }[]
+}
+
+type ProductProps = {
+  product: Product
+}
+
+export default function Cart({ product }: ProductProps) {
   const router = useRouter()
   const {
-    product,
     openSidebar,
-    handleProductQtd,
+    handleProductQuantity,
     handleRemoveItemCart,
+    handleSelectColor,
+    handleSelectCountry,
     handleTotalValue,
-    hasCartItems,
     setOpenSidebar,
+    setProduct,
     cartItems,
     totalValue
   } = useProduct()
 
   useEffect(() => {
     setOpenSidebar(true)
+    setProduct(product)
+    handleSelectColor(product.colors[0])
+    handleSelectCountry(product.sizes[0].country)
   }, [])
 
   useEffect(() => {
-    hasCartItems()
-  }, [cartItems.length])
-
-  useEffect(() => {
     handleTotalValue()
-    console.log(totalValue)
   }, [cartItems])
 
   return (
@@ -55,7 +72,7 @@ export default function Cart() {
                         width={350}
                         height={350}
                         src={item.image}
-                        alt={product.name}
+                        alt={item.name}
                         objectFit={'contain'}
                       />
                     </th>
@@ -63,38 +80,42 @@ export default function Cart() {
                 </thead>
                 <tbody>
                   <tr>
-                    <div>
-                      <td>
-                        <strong>{product.name}</strong>
-                        <strong>{product.model}</strong>
-                      </td>
-                      {console.log(cartItems)}
-                      <td>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleProductQtd(index, item.qtd - 1)
-                          }
-                        >
-                          -
-                        </button>
-                        <input type="text" value={item.qtd} />
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleProductQtd(index, item.qtd + 1)
-                          }
-                        >
-                          +
-                        </button>
-                      </td>
-                    </div>
+                    <td>
+                      <strong>{item.name}</strong>
+                      <strong>{item.model}</strong>
+                    </td>
 
                     <td>
-                      <p>{product.category}</p>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleProductQuantity(index, item.quantity - 1)
+                        }
+                      >
+                        -
+                      </button>
+                      <input
+                        type="text"
+                        value={item.quantity}
+                        onChange={() => null}
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleProductQuantity(index, item.quantity + 1)
+                        }
+                      >
+                        +
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <p>{item.category}</p>
                       <p>Cor: {item.color}</p>
                       <p>Tamanho: {item.size}</p>
-                      <p>Preço: R$ {product.price}</p>
+                      <p>Preço: R$ {item.price}</p>
                     </td>
                   </tr>
                 </tbody>
@@ -129,4 +150,27 @@ export default function Cart() {
       )}
     </div>
   )
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+  const { data } = await api.get('shoe')
+
+  const product = {
+    id: data.id,
+    name: data.name,
+    model: data.model,
+    colors: data.colors,
+    category: data.category,
+    soldOut: data.soldOut,
+    price: data.price.replace('.', ','),
+    sizes: data.sizes,
+    images: data.images
+  }
+
+  return {
+    props: {
+      product
+    },
+    revalidate: 60 * 60 * 24 // 24 hours
+  }
 }

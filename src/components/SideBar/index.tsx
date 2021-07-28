@@ -1,16 +1,27 @@
 import { MdFavorite } from 'react-icons/md'
 import { HiShoppingCart } from 'react-icons/hi'
 import { Formik, Form, Field, FieldArray } from 'formik'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import { useEffect } from 'react'
+import Slider from 'react-slick'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 
 import { useProduct } from '../../contexts/ProductContext'
+
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 import styles from './styles.module.scss'
 
 export function SideBar() {
   const router = useRouter()
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  }
 
   const {
     product,
@@ -22,8 +33,6 @@ export function SideBar() {
     handleSelectCountry,
     handleCartAdd,
     setThumbs,
-    width,
-    thumbs,
     openSidebar,
     cartItems,
     totalValue
@@ -36,6 +45,8 @@ export function SideBar() {
         .map(data => setThumbs(data.imgs))
     }
   }, [productColor])
+
+
 
   return (
     <section
@@ -52,46 +63,17 @@ export function SideBar() {
             <span>R$ {product.price}</span>
           </header>
 
-          {width < 761 && (
-            <section className={styles.carousel}>
-              {thumbs.length > 0 && thumbs[0].includes(productColor) && (
-                <Swiper
-                  direction={'vertical'}
-                  centeredSlides={true}
-                  loop={true}
-                  pagination={{
-                    clickable: true,
-                    renderBullet: function (index, className) {
-                      return `<span class='${className}'><Image width={40} height={40} src="${thumbs[index]}" alt='${product.name}' objectFit="contain" /></span> `
-                    }
-                  }}
-                  className={styles.slider}
-                  autoplay={{
-                    delay: 8000,
-                    disableOnInteraction: false
-                  }}
-                >
-                  {product.images
-                    .filter(allImages => allImages.color === productColor)
-                    .map(data =>
-                      data.imgs.map((image, index) => (
-                        <SwiperSlide>
-                          <Image
-                            width={600}
-                            height={600}
-                            src={image}
-                            alt={product.name}
-                            objectFit="contain"
-                          />
-                        </SwiperSlide>
-                      ))
-                    )}
-                </Swiper>
-              )}
-            </section>
-          )}
-
-          <Formik initialValues={product} onSubmit={handleCartAdd}>
+          <Formik
+            initialValues={product}
+            onSubmit={() =>
+              handleCartAdd(
+                product.name,
+                product.category,
+                product.price,
+                product.model
+              )
+            }
+          >
             <Form>
               <fieldset className={styles.colorOptions}>
                 <legend>Escolha sua cor favorita</legend>
@@ -199,46 +181,37 @@ export function SideBar() {
         <div className={styles.paymentOptions}>
           <h2>Detalhes da compra</h2>
 
-          <Swiper
-            direction={'vertical'}
-            centeredSlides={true}
-            loop={true}
-            autoplay={{
-              delay: 8000,
-              disableOnInteraction: true
-            }}
-            className={styles.paymentList}
-          >
+          <Slider {...settings} className={styles.carousel}>
             {cartItems.map((item, index) => (
-              <SwiperSlide className={styles.slider}>
+              <div className={styles.slider}>
                 <Image
-                  width={350}
-                  height={350}
+                  width={300}
+                  height={300}
+                  key={index}
                   src={item.image}
-                  alt={product.name}
+                  alt={item.name}
                   objectFit={'contain'}
                 />
-                {product && (
-                  <div className={styles.optionsName}>
-                    <div>
-                      <strong>{product.name}</strong>
-                      <strong>{product.model}</strong>
-                    </div>
-                    <span>{cartItems[index].qtd}</span>
+
+                <div className={styles.optionsName}>
+                  <div>
+                    <strong>{item.name}</strong>
+                    <strong>{item.model}</strong>
                   </div>
-                )}
+                  <span>{cartItems[index].quantity} par(es)</span>
+                </div>
 
                 <div className={styles.optionsInfo}>
-                  <p>{product.category}</p>
+                  <p>{item.category}</p>
                   <p>Cor: {item.color}</p>
                   <p>Tamanho: {item.size}</p>
-                  <p>Preço: R$ {product.price}</p>
+                  <p>Preço: R$ {item.price}</p>
                 </div>
-              </SwiperSlide>
+              </div>
             ))}
-          </Swiper>
+          </Slider>
 
-          <strong>Total a pagar: R$ {totalValue}</strong>
+          <span>Total a pagar: R$ {totalValue}</span>
         </div>
       )}
     </section>

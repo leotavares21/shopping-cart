@@ -10,6 +10,7 @@ export default class MYDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Open+Sans:wght@300;400;600;700&display=swap"
             rel="stylesheet"
           />
+          <link rel="shortcut icon" href="/fav-icon.svg" type="image/svg" />
         </Head>
 
         <body>

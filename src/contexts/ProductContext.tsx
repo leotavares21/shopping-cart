@@ -13,32 +13,46 @@ type Product = {
   sizes: { country: string; values: number[] }[]
 }
 
+type Cart = {
+  name: string
+  price: string
+  category: string
+  model: string
+  color: string
+  size: number
+  image: string
+  quantity: number
+}
+
 type ProductContextData = {
   product: Product
   productColor: string
   productCountry: string
   productSize: number
   openSidebar: boolean
-  cartItems: { color: string; size: number; image: string; qtd: number }[]
+  cartItems: Cart[]
   totalValue: string | number
   titlePage: string
   thumbs: string[]
-  navIndex: number
   width: number
   setProduct: (product: Product) => void
+  setCartItems: (item) => void
   handleSelectColor: (color: string) => void
   handleSelectCountry: (country: string) => void
   handleSelectSize: (size: number) => void
   handleOpenSidebar: (open: boolean) => void
-  handleProductQtd: (index: number, number: number) => void
-  handleCartAdd: () => void
+  handleProductQuantity: (index: number, number: number) => void
+  handleCartAdd: (
+    name: string,
+    category: string,
+    price: string,
+    model: string
+  ) => void
   handleRemoveItemCart: (index: number) => void
-  hasCartItems: () => void
   handleTotalValue: () => void
   setTotalValue: (value: string | number) => void
   setTitlePage: (title: string) => void
   setOpenSidebar: (open: boolean) => void
-  openNav: (index: number) => void
   setThumbs: (imgs: string[]) => void
   setWidth: (width: number) => void
 }
@@ -52,7 +66,6 @@ type ProductContextProviderProps = {
 export function ProductContextProvider({
   children
 }: ProductContextProviderProps) {
-  const router = useRouter()
   const [product, setProduct] = useState(null)
   const [productColor, setProductColor] = useState('')
   const [productCountry, setProductCountry] = useState('')
@@ -61,7 +74,6 @@ export function ProductContextProvider({
   const [totalValue, setTotalValue] = useState(null)
   const [cartItems, setCartItems] = useState([])
   const [titlePage, setTitlePage] = useState('')
-  const [navIndex, setNavIndex] = useState(-1)
   const [thumbs, setThumbs] = useState([])
   const [width, setWidth] = useState(null)
 
@@ -78,24 +90,25 @@ export function ProductContextProvider({
   }
 
   function handleOpenSidebar(open: boolean) {
-    if (router.pathname === '/') {
-      setOpenSidebar(false)
-    } else {
-      setOpenSidebar(open)
-    }
+    setOpenSidebar(open)
   }
 
-  function handleProductQtd(index: number, qtd: number) {
-    if (qtd > 10 || qtd < 1) {
+  function handleProductQuantity(index: number, quantity: number) {
+    if (quantity > 10 || quantity < 1) {
       return
     } else {
       const newCartItems = [...cartItems]
-      newCartItems[index].qtd = qtd
+      newCartItems[index].quantity = quantity
       setCartItems(newCartItems)
     }
   }
 
-  function handleCartAdd() {
+  function handleCartAdd(
+    name: string,
+    category: string,
+    price: string,
+    model: string
+  ) {
     if (!productSize) {
       alert('Nenhum tamanho selecionado!')
     } else {
@@ -106,10 +119,14 @@ export function ProductContextProvider({
         alert('O tamanho já foi selecionado')
       } else {
         const item = {
+          name,
+          category,
+          price,
+          model,
           color: productColor,
           size: productSize,
           image: `/${productColor}/${productColor}-air-jordan.png`,
-          qtd: 1
+          quantity: 1
         }
 
         setCartItems([...cartItems, item])
@@ -124,31 +141,16 @@ export function ProductContextProvider({
   }
 
   function handleTotalValue() {
-    const totalQtd = cartItems.reduce((allItems, item) => allItems + item.qtd, 0)
-    const price = Number(product.price.replace(',', '.'))
-    const newTotalValue = (price * totalQtd).toFixed(2).replace('.', ',')
+    if (cartItems.length > 0 && product) {
+      const totalQuantity = cartItems.reduce(
+        (allItems, item) => allItems + item.quantity,
+        0
+      )
+      const price = Number(product.price.replace(',', '.'))
+      const newTotalValue = (price * totalQuantity).toFixed(2).replace('.', ',')
 
-    setTotalValue(newTotalValue)
-  }
-
-  function hasCartItems() {
-    if (sessionStorage.cartItems) {
-      const items = sessionStorage.cartItems
-
-      if (cartItems.length === 0) {
-        setCartItems(JSON.parse(items))
-      }else {
-        sessionStorage.setItem('cartItems', JSON.stringify(cartItems))
-      }
-    } else {
-      if (cartItems.length > 0) {
-        sessionStorage.setItem('cartItems', JSON.stringify(cartItems))
-      }
+      setTotalValue(newTotalValue)
     }
-  }
-
-  function openNav(index: number) {
-    setNavIndex(index)
   }
 
   return (
@@ -162,23 +164,21 @@ export function ProductContextProvider({
         totalValue,
         titlePage,
         cartItems,
-        navIndex,
         thumbs,
         width,
         setProduct,
         handleSelectColor,
         handleSelectCountry,
-        handleProductQtd,
+        handleProductQuantity,
         handleSelectSize,
         handleOpenSidebar,
         handleCartAdd,
         handleRemoveItemCart,
         setOpenSidebar,
         handleTotalValue,
-        hasCartItems,
+        setCartItems,
         setTotalValue,
         setTitlePage,
-        openNav,
         setThumbs,
         setWidth
       }}

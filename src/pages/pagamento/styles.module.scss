@@ -12,8 +12,8 @@
 
   @media (max-width: 761px) {
     width: 100vw;
-    min-height: 90vh;
-    padding: 1rem;
+    min-height: calc(100vh + 8rem);
+    padding: 8rem 1rem 1rem 1rem;
   }
 
   .icon {

@@ -9,6 +9,10 @@
     width: 100vw;
   }
 
+  @media (max-width: 761px){
+    top: 0;
+  }
+
   .cartEmpty {
     display: flex;
     justify-content: center;
@@ -20,7 +24,7 @@
       display: inline-block;
       padding: 2rem 3rem;
       border-radius: 0.5rem;
-      border: 1px dashed var(--gray-300);
+      border: 1px dashed var(--gray-400);
     }
   }
 
@@ -29,7 +33,7 @@
     padding: 6.5rem 3rem 0.5rem 3rem;
 
     table {
-      width: 100%;
+      max-width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -41,6 +45,7 @@
       }
 
       tbody {
+
         @media (max-width: 761px) {
           tr > td {
             flex-wrap: wrap;
@@ -50,8 +55,43 @@
           }
         }
 
+        tr {
+          display: flex;
+          margin-top: 1rem;
+          width: 30rem;
+
+          @media (max-width: 761px) {
+            width: 20rem;
+          }
+
+          &:first-of-type {
+            display: flex;
+            justify-content: space-between;
+
+            td:first-of-type {
+              display: flex;
+              flex-direction: column;
+            }
+          }
+
+          &:last-of-type{
+            td {
+              display: flex;
+              justify-content: space-between;
+              width: 30rem;
+            }
+          }
+
+          td:nth-of-type(2),
+          td:last-of-type {
+            display: flex;
+            p {
+              margin-top: 1rem;
+            }
+          }
+        }
+
         strong {
-          display: block;
           color: var(--blue-800);
           text-transform: uppercase;
 
@@ -64,17 +104,6 @@
           }
         }
 
-        div {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 1rem;
-          width: 30rem;
-
-          @media (max-width: 761px) {
-            width: 20rem;
-          }
-        }
-
         button {
           border: 1px solid var(--blue-800);
           border-radius: 50%;
@@ -84,16 +113,6 @@
           align-items: center;
           justify-content: center;
           font-weight: 600;
-        }
-
-        td:nth-of-type(2),
-        td:last-of-type {
-          display: flex;
-          justify-content: space-between;
-
-          p {
-            margin-top: 1rem;
-          }
         }
 
         input {
@@ -160,8 +179,9 @@
       padding-left: 0;
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 420px) {
       flex-direction: column;
+      margin-bottom: 5rem;
     }
 
     h2 {

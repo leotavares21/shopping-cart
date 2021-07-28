@@ -11,20 +11,18 @@ import styles from './styles.module.scss'
 export default function Payment() {
   const router = useRouter()
 
-  const {
-    cartItems,
-    setOpenSidebar,
-    hasCartItems
-  } = useProduct()
+  const { setOpenSidebar, width, cartItems } = useProduct()
 
   useEffect(() => {
-    setOpenSidebar(false)
-    hasCartItems()
+    if(width > 761){
+      setOpenSidebar(false)
+    }else {
+      setOpenSidebar(true)
+    }
+    if (cartItems.length === 0) {
+      router.push('/')
+    }
   }, [])
-
-  useEffect(() => {
-    hasCartItems()
-  }, [cartItems.length])
 
   return (
     <div className={styles.paymentContainer}>
@@ -66,8 +64,8 @@ export default function Payment() {
             />
 
             <div>
-              <label htmlFor="cvc">CVC</label>
-              <Field id="cvc" name="cvc" placeholder="***" />
+              <label htmlFor="cvv">CVV</label>
+              <Field id="cvv" name="cvv" placeholder="***" />
             </div>
             <div>
               <label htmlFor="month">Mês</label>

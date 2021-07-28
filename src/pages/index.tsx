@@ -1,7 +1,6 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { AiFillStar } from 'react-icons/ai'
@@ -50,17 +49,14 @@ type HomeProps = {
 }
 
 export default function Home({ product, productBody }: HomeProps) {
-  const router = useRouter()
   const {
     productColor,
     width,
     thumbs,
-    cartItems,
     setProduct,
     setThumbs,
     handleSelectColor,
     setOpenSidebar,
-    hasCartItems,
     handleSelectCountry
   } = useProduct()
 
@@ -68,14 +64,15 @@ export default function Home({ product, productBody }: HomeProps) {
     setProduct(product)
     handleSelectColor(product.colors[0])
     handleSelectCountry(product.sizes[0].country)
-    if(router.pathname === '/'){
-      setOpenSidebar(false)
-    }
   }, [])
 
   useEffect(() => {
-    hasCartItems()
-  }, [cartItems.length])
+    if (width > 761) {
+      setOpenSidebar(false)
+    }else {
+      setOpenSidebar(true)
+    }
+  }, [width])
 
   useEffect(() => {
     productBody.images
@@ -88,7 +85,6 @@ export default function Home({ product, productBody }: HomeProps) {
       <Head>
         <title>Jordan Brand</title>
       </Head>
-      {width > 761 && (
         <section className={styles.carousel}>
           {thumbs.length > 0 && thumbs[0].includes(productColor) && (
             <Swiper
@@ -117,6 +113,7 @@ export default function Home({ product, productBody }: HomeProps) {
                         height={600}
                         src={image}
                         alt={product.name}
+                        title="image by artwalk.com.br"
                         objectFit="contain"
                       />
                     </SwiperSlide>
@@ -125,7 +122,7 @@ export default function Home({ product, productBody }: HomeProps) {
             </Swiper>
           )}
         </section>
-      )}
+
 
       <section className={styles.banner}>
         <Image
@@ -241,6 +238,6 @@ export const getStaticProps: GetStaticProps = async () => {
       product,
       productBody
     },
-    revalidate: 60 * 60 * 8 // 8 hours
+    revalidate: 60 * 60 * 24 // 24 hours
   }
 }
