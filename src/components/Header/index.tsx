@@ -91,25 +91,6 @@ export function Header() {
           <nav>
             <ul>
               <li>
-                <button type="button">
-                  <FiSearch />
-                </button>
-              </li>
-
-              <li>
-                <button type="button">
-                  <FaUserAlt />
-                </button>
-              </li>
-
-              <li>
-                <button type="button">
-                  <span>1</span>
-                  <MdFavorite />
-                </button>
-              </li>
-
-              <li>
                 <button type="button" onClick={() => router.push('/carrinho')}>
                   {cartItems.length > 0 && <span>{cartItems.length}</span>}
                   <HiShoppingCart />
